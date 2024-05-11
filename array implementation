@@ -1,0 +1,144 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 100
+
+int arr[MAX_SIZE];
+int size = 0;
+
+// Function to create an empty array list
+void createArrayList() {
+    size = 0;
+}
+
+// Function to insert an element at the end of the array
+void insertElement(int element) {
+    if (size == MAX_SIZE) {
+        printf("Array list is full\n");
+        return;
+    }
+    arr[size++] = element;
+}
+
+// Function to delete an element from the array list
+void deleteElement(int index) {
+    if (index < 0 || index >= size) {
+        printf("Invalid index\n");
+        return;
+    }
+    for (int i = index; i < size - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    size--;
+}
+
+// Function to display all elements in the array list
+void display(int *array, int arraySize) {
+    if (arraySize == 0) {
+        printf("Array list is empty\n");
+        return;
+    }
+    printf("Array list elements: ");
+    for (int i = 0; i < arraySize; i++) {
+        printf("%d ", array[i]);
+    }
+    printf("\n");
+}
+
+// Function for linear search
+int linearSearch(int key) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == key)
+            return i;
+    }
+    return -1;
+}
+
+// Function for binary search
+int binarySearch(int key) {
+    int low = 0, high = size - 1, mid;
+    while (low <= high) {
+        mid = low + (high - low) / 2;
+        if (arr[mid] == key)
+            return mid;
+        else if (arr[mid] < key)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    return -1;
+}
+
+// Function to reverse the array list
+void reverseArray() {
+    int temp;
+    for (int i = 0; i < size / 2; i++) {
+        temp = arr[i];
+        arr[i] = arr[size - 1 - i];
+        arr[size - 1 - i] = temp;
+    }
+}
+
+int main() {
+    int n, element;
+
+    createArrayList(); // Creating an empty array list
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter the elements:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &element);
+        insertElement(element);
+    }
+
+    printf("Original ");
+    display(arr, size); // Displaying the array list
+
+    int choice;
+    printf("Choose search type:\n1. Linear Search\n2. Binary Search\nEnter your choice: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1: {
+            int key;
+            printf("Enter the element to search: ");
+            scanf("%d", &key);
+            int linearIndex = linearSearch(key);
+            if (linearIndex != -1)
+                printf("Element %d found at index: %d\n", key, linearIndex);
+            else
+                printf("Element %d not found\n", key);
+            break;
+        }
+        case 2: {
+            int key;
+            printf("Enter the element to search: ");
+            scanf("%d", &key);
+            int binaryIndex = binarySearch(key);
+            if (binaryIndex != -1)
+                printf("Element %d found at index: %d\n", key, binaryIndex);
+            else
+                printf("Element %d not found\n", key);
+            break;
+        }
+        default:
+            printf("Invalid choice\n");
+    }
+
+    reverseArray();
+    printf("Reversed ");
+    display(arr, size); // Displaying the reversed array list
+
+    // Restoring the original array
+    reverseArray();
+
+    int index;
+    printf("Enter the index of element to delete: ");
+    scanf("%d", &index);
+    deleteElement(index);
+    printf("Array after deleting element at index %d: ", index);
+    display(arr, size);
+    return 0;
+}
