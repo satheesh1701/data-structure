@@ -1,0 +1,533 @@
+1.You are given with an array arr which contains integer elements. Sort these elements in 
+ascending order using insertion sort and print the 6th Iteration result. 
+Example: 
+Input:98,23,45,14,6,67,33,42 
+Output:6,14,23,33,45,67,98,42 in cprogram
+
+#include <stdio.h>
+
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        if (i != 0) {
+            printf(",");
+        }
+        printf("%d", arr[i]);
+    }
+    printf("\n");
+}
+
+void insertionSortAndPrintIteration(int arr[], int n, int iteration) {
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+
+        // Move elements of arr[0..i-1], that are greater than key,
+        // to one position ahead of their current position
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+
+        // Print the array at the specified iteration
+        if (i == iteration) {
+            printArray(arr, n);
+        }
+    }
+}
+
+int main() {
+    int arr[] = {98, 23, 45, 14, 6, 67, 33, 42};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    // Print the array at the 6th iteration of the insertion sort
+    insertionSortAndPrintIteration(arr, n, 6);
+
+    return 0;
+}
+
+2.Given a number n.  the task is to print the Fibonacci series and the sum of the series  using 
+recursion.   
+input: n=10  
+output: Fibonacci series   
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34 
+Sum: 88
+
+#include <stdio.h>
+
+// Function to compute the nth Fibonacci number using recursion
+int fibonacci(int n) {
+    if (n <= 0)
+        return 0;
+    else if (n == 1)
+        return 1;
+    else
+        return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Function to print the Fibonacci series and calculate its sum
+void printFibonacciSeriesAndSum(int n) {
+    int sum = 0;
+
+    printf("Fibonacci series\n");
+
+    for (int i = 0; i < n; i++) {
+        int fib = fibonacci(i);
+        printf("%d", fib);
+
+        if (i < n - 1) {
+            printf(", ");
+        }
+
+        sum += fib;
+    }
+
+    printf("\nSum: %d\n", sum);
+}
+
+int main() {
+    int n = 10;
+
+    printFibonacciSeriesAndSum(n);
+
+    return 0;
+}
+
+3.You are given an array arr in increasing order. Find the element x from arr using binary 
+search. 
+Example 1: arr={ 1,5,6,7,9,10},X=6  
+Output : Element found at location 2 
+Example 2: arr={ 1,5,6,7,9,10},X=11  
+Output : Element not found at location 2 
+
+#include <stdio.h>
+
+// Function to perform binary search
+int binarySearch(int arr[], int size, int x) {
+    int left = 0;
+    int right = size - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        // Check if x is present at mid
+        if (arr[mid] == x) {
+            return mid;  // Element found
+        }
+        
+        // If x greater, ignore left half
+        if (arr[mid] < x) {
+            left = mid + 1;
+        } else {
+            // If x is smaller, ignore right half
+            right = mid - 1;
+        }
+    }
+    return -1;  // Element not found
+}
+
+int main() {
+    int arr[] = {1, 5, 6, 7, 9, 10};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    int x = 6;  // Example 1: element to be searched
+    int result = binarySearch(arr, size, x);
+    if (result != -1) {
+        printf("Element found at location %d\n", result);
+    } else {
+        printf("Element not found\n");
+    }
+    
+    x = 11;  // Example 2: element to be searched
+    result = binarySearch(arr, size, x);
+    if (result != -1) {
+        printf("Element found at location %d\n", result);
+    } else {
+        printf("Element not found\n");
+    }
+    
+    return 0;
+}
+
+4.Given a string s, sort it in ascending  order  and find the starting index of repeated character  
+Input: s = "tree" 
+Output: "eert", starting index 0 
+Input: s = "kkj" 
+Output: "jkk", starting index : 1 
+Example 2: 
+Input: s = "cccaaa" 
+Output: "aaaccc", starting index 0,3 
+Example 3: 
+Input: s = "Aabb" 
+Output: "bbAa",starting index 0,2 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// Function to compare two characters for qsort
+int compare(const void *a, const void *b) {
+    return (*(char *)a - *(char *)b);
+}
+
+// Function to find and print the sorted string and starting indices of repeated characters
+void sortStringAndFindIndices(char *s) {
+    int n = strlen(s);
+    
+    // Sort the string
+    qsort(s, n, sizeof(char), compare);
+
+    // Print the sorted string
+    printf("%s\n", s);
+    
+    // Find and print the starting indices of repeated characters
+    int found = 0;
+    for (int i = 1; i < n; i++) {
+        if (s[i] == s[i - 1]) {
+            if (i == 1 || s[i] != s[i - 2]) {
+                if (found) {
+                    printf(",");
+                }
+                printf("%d", i - 1);
+                found = 1;
+            }
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    char s1[] = "tree";
+    printf("Input: %s\n", s1);
+    printf("Output: ");
+    sortStringAndFindIndices(s1);
+    
+    char s2[] = "kkj";
+    printf("Input: %s\n", s2);
+    printf("Output: ");
+    sortStringAndFindIndices(s2);
+    
+    char s3[] = "cccaaa";
+    printf("Input: %s\n", s3);
+    printf("Output: ");
+    sortStringAndFindIndices(s3);
+    
+    char s4[] = "Aabb";
+    printf("Input: %s\n", s4);
+    printf("Output: ");
+    sortStringAndFindIndices(s4);
+    
+    return 0;
+}
+
+5.Given a string s, find the frequency of characters 
+Example 1: 
+Input: s = "tree" 
+Output t->1, r->1, e->2
+
+#include <stdio.h>
+#include <string.h>
+
+// Function to find and print the frequency of each character in a string
+void findCharacterFrequency(char *s) {
+    // Initialize an array to store frequencies of characters
+    int freq[256] = {0};  // Assuming ASCII characters
+
+    // Calculate the frequency of each character
+    for (int i = 0; s[i] != '\0'; i++) {
+        freq[(unsigned char)s[i]]++;
+    }
+
+    // Print the frequency of each character
+    for (int i = 0; i < 256; i++) {
+        if (freq[i] > 0) {
+            printf("%c->%d, ", i, freq[i]);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    char s1[] = "tree";
+    printf("Input: %s\n", s1);
+    printf("Output: ");
+    findCharacterFrequency(s1);
+
+    // You can test with other strings as needed
+    char s2[] = "example";
+    printf("Input: %s\n", s2);
+    printf("Output: ");
+    findCharacterFrequency(s2);
+
+    return 0;
+}
+
+6.Given an unsorted array arr[] with both positive and negative elements, the task is to find 
+the smallest positive number missing from the array. 
+Input:  arr[] = {2, 3, 7, 6, 8, -1, -10, 15} 
+Output: 1 
+Input:  arr[] = { 2, 3, -7, 6, 8, 1, -10, 15 } 
+Output: 4 
+Input: arr[] = {1, 1, 0, -1, -2} 
+Output: 2
+
+#include <stdio.h>
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int segregate(int arr[], int size) {
+    int j = 0, i;
+    for(i = 0; i < size; i++) {
+        if (arr[i] <= 0) {
+            swap(&arr[i], &arr[j]);
+            j++;
+        }
+    }
+    return j;
+}
+
+int findMissingPositive(int arr[], int size) {
+    int i;
+
+    // Mark arr[i] as visited by making arr[arr[i] - 1] negative.
+    for(i = 0; i < size; i++) {
+        int x = abs(arr[i]);
+        if (x - 1 < size && arr[x - 1] > 0)
+            arr[x - 1] = -arr[x - 1];
+    }
+
+    // Return the first index value at which is positive
+    for(i = 0; i < size; i++)
+        if (arr[i] > 0)
+            return i + 1; // 1 is added because indexes start from 0
+
+    return size + 1;
+}
+
+int findMissing(int arr[], int size) {
+    // First separate positive and negative numbers
+    int shift = segregate(arr, size);
+
+    // Call findMissingPositive for positive part
+    return findMissingPositive(arr + shift, size - shift);
+}
+
+// Test the function
+int main() {
+    int arr1[] = {2, 3, 7, 6, 8, -1, -10, 15};
+    int arr2[] = {2, 3, -7, 6, 8, 1, -10, 15};
+    int arr3[] = {1, 1, 0, -1, -2};
+    int size1 = sizeof(arr1) / sizeof(arr1[0]);
+    int size2 = sizeof(arr2) / sizeof(arr2[0]);
+    int size3 = sizeof(arr3) / sizeof(arr3[0]);
+    
+    printf("The smallest positive missing number is %d\n", findMissing(arr1, size1));
+    printf("The smallest positive missing number is %d\n", findMissing(arr2, size2));
+    printf("The smallest positive missing number is %d\n", findMissing(arr3, size3));
+
+    return 0;
+}
+
+7.Given an array of size N-1 such that it only contains distinct integers in the range of 1 to 
+N. Find the missing element. 
+Input: 
+N = 5 
+A[] = {1,2,3,5} 
+Output: 4 
+Input: 
+N = 10 
+A[] = {6,1,2,8,3,4,7,10,5}8. 
+Output: 9 
+
+#include <stdio.h>
+
+int findMissing(int arr[], int N) {
+    int total = (N * (N + 1)) / 2;
+    int sum = 0;
+    
+    // Calculate the sum of elements in the array
+    for(int i = 0; i < N - 1; i++) {
+        sum += arr[i];
+    }
+    
+    // The missing number is the difference between the expected sum and the actual sum
+    return total - sum;
+}
+
+int main() {
+    int arr1[] = {1, 2, 3, 5};
+    int N1 = 5;
+    printf("The missing number is %d\n", findMissing(arr1, N1));
+
+    int arr2[] = {6, 1, 2, 8, 3, 4, 7, 10, 5};
+    int N2 = 10;
+    printf("The missing number is %d\n", findMissing(arr2, N2));
+    
+    return 0;
+}
+
+8.Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input 
+string is valid. An input string is valid if: 
+1. Open brackets must be closed by the same type of brackets. 
+2. Open brackets must be closed in the correct order. 
+Input: s = "()" 
+Output: true 
+Input: s = "()[]{}" 
+Output: true 
+Input: s = "(]" 
+Output: false 
+Input: s = "([)]" 
+Output: false 
+Input: s = "{[]}" 
+Output: true 
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Function to check if the given pairs match
+bool isMatchingPair(char char1, char char2) {
+    if (char1 == '(' && char2 == ')') return true;
+    if (char1 == '{' && char2 == '}') return true;
+    if (char1 == '[' && char2 == ']') return true;
+    return false;
+}
+
+// Function to check if the input string is valid
+bool isValid(char* s) {
+    int n = strlen(s);
+    // Stack to store the open brackets
+    char stack[n];
+    int top = -1;
+
+    for (int i = 0; i < n; i++) {
+        // If the character is an open bracket, push it onto the stack
+        if (s[i] == '(' || s[i] == '{' || s[i] == '[') {
+            stack[++top] = s[i];
+        } else {
+            // If the character is a close bracket, check if it matches the top of the stack
+            if (top == -1) return false; // Stack is empty, invalid case
+            if (!isMatchingPair(stack[top], s[i])) return false; // Mismatched pair
+            top--; // Pop the stack
+        }
+    }
+
+    // If the stack is empty, all open brackets were properly closed
+    return (top == -1);
+}
+
+int main() {
+    char s1[] = "()";
+    char s2[] = "()[]{}";
+    char s3[] = "(]";
+    char s4[] = "([)]";
+    char s5[] = "{[]}";
+
+    printf("Input: \"%s\" - Output: %s\n", s1, isValid(s1) ? "true" : "false");
+    printf("Input: \"%s\" - Output: %s\n", s2, isValid(s2) ? "true" : "false");
+    printf("Input: \"%s\" - Output: %s\n", s3, isValid(s3) ? "true" : "false");
+    printf("Input: \"%s\" - Output: %s\n", s4, isValid(s4) ? "true" : "false");
+    printf("Input: \"%s\" - Output: %s\n", s5, isValid(s5) ? "true" : "false");
+
+    return 0;
+}
+
+9.Given a number n, the task is to print the Fibonacci series and the sum of the series using 
+Iterative procedure.  
+input n=10  
+output   
+Fibonacci series    
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34 
+Sum: 88 
+
+#include <stdio.h>
+
+void fibonacciSeriesAndSum(int n) {
+    if (n <= 0) {
+        printf("The input must be a positive integer.\n");
+        return;
+    }
+
+    // Initialize the first two Fibonacci numbers and sum
+    int a = 0, b = 1;
+    int sum = a + b;
+
+    // Print the Fibonacci series and calculate the sum
+    printf("Fibonacci series: %d, %d", a, b);
+
+    for (int i = 2; i < n; i++) {
+        int next = a + b;
+        printf(", %d", next);
+        sum += next;
+        a = b;
+        b = next;
+    }
+
+    // If n is 1, adjust the sum to only include the first number
+    if (n == 1) {
+        sum = 0;
+    }
+
+    printf("\nSum: %d\n", sum);
+}
+
+int main() {
+    int n = 10;
+    fibonacciSeriesAndSum(n);
+    return 0;
+}
+
+Given two strings needle and haystack, return the index of the first occurrence of needle in 
+haystack, or -1 if needle is not part of haystack. 
+Example 1: 
+Input: haystack = "sadbutsad", needle = "sad" 
+Output: 0 
+Explanation: "sad" occurs at index 0 and 6. 
+The first occurrence is at index 0, so we return 0. 
+Input: haystack = "leetcode", needle = "leeto" 
+Output: -1 
+Explanation: "leeto" did not occur in "leetcode", so we return -1. 
+
+#include <stdio.h>
+#include <string.h>
+
+int strStr(char *haystack, char *needle) {
+    int haystackLen = strlen(haystack);
+    int needleLen = strlen(needle);
+    
+    // If needle is empty, return 0
+    if (needleLen == 0) return 0;
+    
+    // Iterate through haystack string
+    for (int i = 0; i <= haystackLen - needleLen; i++) {
+        // Check if needle matches substring starting from index i
+        int j;
+        for (j = 0; j < needleLen; j++) {
+            if (haystack[i + j] != needle[j])
+                break; // Mismatch found, break out of inner loop
+        }
+        
+        // If needle matches at index i, return i
+        if (j == needleLen)
+            return i;
+    }
+    
+    // If needle is not found in haystack, return -1
+    return -1;
+}
+
+int main() {
+    char haystack1[] = "sadbutsad";
+    char needle1[] = "sad";
+    printf("Output: %d\n", strStr(haystack1, needle1));
+    
+    char haystack2[] = "leetcode";
+    char needle2[] = "leeto";
+    printf("Output: %d\n", strStr(haystack2, needle2));
+    
+    return 0;
+}
+
